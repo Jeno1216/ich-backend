@@ -107,7 +107,7 @@ app.post('/login', (req, res) => {
                             'jwt-secret-key',
                             { expiresIn: '1d' }
                         );
-                        res.cookie('token', token, { sameSite: 'Lax', secure: true }); 
+                        res.cookie('token', token, { sameSite: 'Strict', secure: true }); 
                         // sameSite none because our frontend has different domain with backend. secure true because
                         // the deployed frontend and server is https not http
                         return res.json("Success");
@@ -148,7 +148,7 @@ app.get('/', verifyUser, (req, res) => {
 // Logout API
 app.get('/logout', (req, res) => {
     res.clearCookie('token', { 
-        sameSite: 'Lax', 
+        sameSite: 'Strict', 
         secure: true
     });
     return res.json('Success');
