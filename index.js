@@ -147,9 +147,13 @@ app.get('/', verifyUser, (req, res) => {
 
 // Logout API
 app.get('/logout', (req, res) => {
-    res.clearCookie('token') // clear cookie, means user is logged out
-    return res.json('Success')
-})
+    res.clearCookie('token', { 
+        sameSite: 'None', 
+        secure: true
+    });
+    return res.json('Success');
+});
+
 
 // Posting Products.
 // We call verifyUser to check if admin is logged in or not
