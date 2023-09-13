@@ -199,12 +199,6 @@ app.get('/fetchproducts', (req, res) => {
                 averageRating: { $avg: '$ratings.rating' }, // Calculate the average of the rating values in the ratings array
                 numberOfRatings: { $size: '$ratings' } // Calculate the size of the ratings array
             }
-        },
-        {
-            $sort: { averageRating: -1 } // Sort by averageRating in descending order
-        },
-        {
-            $limit: 4 // Limit the results to the top 4
         }
     ])
         .then(products => {
