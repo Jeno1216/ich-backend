@@ -46,6 +46,10 @@ app.use(cookieParser());
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
+// Serve static files from the 'public' directory
+app.use('/Images', express.static('Public/Images'));
+
+
 // Connect to the MongoDB database at the specified URL
 mongoose.connect('mongodb+srv://ich:QE9TfuuR5lXF46eC@ich.vdsul1c.mongodb.net/?retryWrites=true&w=majority')
 
