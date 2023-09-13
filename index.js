@@ -107,7 +107,7 @@ app.post('/login', (req, res) => {
                             'jwt-secret-key',
                             { expiresIn: '1d' }
                         );
-                        res.cookie('token', token);
+                        res.cookie('token', token, { sameSite: 'None', secure: true });
                         return res.json("Success");
                     } else {
                         return res.json('Password incorrect');
@@ -163,7 +163,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-app.post('/createproducts', upload.single('file'), (req, res) => { // upload.single allows only single file
+app.post('/createproducts', verifyUser, upload.single('file'), (req, res) => { // upload.single allows only single file
     ProductModel.create({
         author_id: req.body.author_id,
         title: req.body.title,
