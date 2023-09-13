@@ -165,16 +165,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-app.post('/createproducts', verifyUser, upload.single('file'), (req, res) => { // upload.single allows only single file
+app.post('/createproducts', verifyUser, (req, res) => { 
     ProductModel.create({
         author_id: req.body.author_id,
         title: req.body.title,
         description: req.body.description,
-        file: req.file.filename
+        file: req.body.file // assuming imageUrl is the field for the image link in your model
     })
-        .then(result => res.json("Success"))
+        .then(result => {
+            console.log(result)
+            res.json("Success")})
         .catch(err => res.json(err))
 });
+
 
 // fetch products as well as their ratings
 app.get('/fetchproducts', (req, res) => {
@@ -299,13 +302,13 @@ app.get('/getuserandrating', verifyUser, async (req, res) => {
 });
 
 
-app.put('/editprofile', upload.single('file'), (req, res) => {
+app.put('/editprofile', (req, res) => {
     const id = req.body.id;
     const update = {};
     if (req.body.username) update.username = req.body.username;
     if (req.body.facebook) update.facebook = req.body.facebook;
-    if (req.file) update.file = req.file.filename;
-
+    if (req.body.file) update.file = req.body.file;  // This should be a string containing the URL of the photo
+  
     UserModel.findByIdAndUpdate(
         { _id: id },
         update
