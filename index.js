@@ -46,8 +46,14 @@ app.use(cookieParser());
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-// Serve static files from the 'public' directory
-app.use('/Images', express.static('Public/Images'));
+// This line tells Express to serve static files (like images, CSS files, and JavaScript files) 
+// from the ‘Images’ directory inside the ‘Public’ directory. 
+// These files will be available under the ‘/Images’ path on your website.
+// importante ini para ma access ta ang images from backend on this directory requested from thr frontend 
+// sa deplyment na ni.
+// for example, https://iloilo-coffee-house-api.onrender.com/Images/${post.file}, src ina sya sa images from frontend
+// nga ga request sa backend
+app.use('/Images', express.static('Public/Images')); //
 
 
 // Connect to the MongoDB database at the specified URL
