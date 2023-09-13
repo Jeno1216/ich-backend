@@ -46,7 +46,6 @@ app.use(cookieParser());
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-
 // Connect to the MongoDB database at the specified URL
 mongoose.connect('mongodb+srv://ich:QE9TfuuR5lXF46eC@ich.vdsul1c.mongodb.net/?retryWrites=true&w=majority')
 
@@ -397,6 +396,4 @@ app.get('/fetchuserbyid/:id', async (req, res) => {
 
 
 app.listen(3001, () => {
-    console.log('Server running on port 3001')
-
-})
+    console.log('Server running on port 3001')})
