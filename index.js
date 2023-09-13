@@ -34,13 +34,14 @@ const RatingModel = require('./models/RatingModel')
 app.use(express.json());
 
 // Configure CORS settings for cross-origin requests
-app.use(cors());
 
 // Parse cookies in incoming requests
 app.use(cookieParser());
 
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
+app.use(express.static('dist'));
+
 
 // Connect to the MongoDB database at the specified URL
 mongoose.connect('mongodb+srv://ich:QE9TfuuR5lXF46eC@ich.vdsul1c.mongodb.net/?retryWrites=true&w=majority')
@@ -125,7 +126,7 @@ const verifyUser = (req, res, next) => {
     }
 };
 
-app.get('/', verifyUser, (req, res) => {
+app.get('/api', verifyUser, (req, res) => {
     return res.json({ _id: req._id, email: req.email, username: req.username });
 });
 
@@ -160,7 +161,7 @@ app.post('/createproducts', verifyUser, upload.single('file') , (req, res) => { 
 });
 
 // fetch products as well as their ratings
-app.get('/fetchproducts', (req, res) => {
+app.get('/api/fetchproducts', (req, res) => {
     // Use the aggregate method on the ProductModel to perform an aggregation pipeline
     // bali since ang 'ratings' collection ta is need nya ang product id sang products
     // para ma determine diin nga ratings ang belong to product. we need to reference the product id to the 
