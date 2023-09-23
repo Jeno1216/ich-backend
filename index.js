@@ -16,29 +16,52 @@ const jwt = require('jsonwebtoken');
 // Importing the cookie-parser middleware to parse cookies in HTTP requests.
 const cookieParser = require('cookie-parser');
 
+
 // Importing the multer middleware for handling file uploads.
 const multer = require('multer');
 
 // Importing the path module for working with file and directory paths.
 const path = require('path');
 
+const passportSetup = require("./passport");
+const passport = require("passport");
+const authRoute = require("./routes/auth");
+
 // Create an instance of the Express app
 const app = express();
 
 // Database Models
 const UserModel = require('./models/UserModel')
+const UserModelGoogle = require('./models/UserModelGoogle')
 const ProductModel = require('./models/ProductModel')
-const RatingModel = require('./models/RatingModel')
+const RatingModel = require('./models/RatingModel');
+const cookieSession = require('cookie-session');
+
+
+// Configure CORS settings for cross-origin requests
+app.use(cors({
+    origin: ['http://localhost:5173', 'https://iloilo-coffee-house.onrender.com'],  // Allow requests from this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allow specified HTTP methods
+    credentials: true  // Allow credentials like cookies to be included in requests
+}));
 
 // Enable JSON request and response handling
 app.use(express.json());
 
-// Configure CORS settings for cross-origin requests
-app.use(cors({
-    origin: ['https://iloilo-coffee-house.onrender.com'],  // Allow requests from this origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allow specified HTTP methods
-    credentials: true  // Allow credentials like cookies to be included in requests
-}));
+app.use(cookieSession(
+    {
+        name: 'session',
+        keys: ['lama'],
+        maxAge: 24 * 60 * 60 * 100
+    }
+));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+app.use("/auth", authRoute);
 
 // Parse cookies in incoming requests
 app.use(cookieParser());
@@ -94,6 +117,33 @@ app.post('/register', (req, res) => {
         .catch(err => res.json(err));
 });
 
+
+app.get('/check-google-id/:googleId', (req, res) => {
+    const idToCheck = req.params.googleId;
+    console.log(idToCheck);
+
+    // Look for a user with the provided email in the database
+    UserModelGoogle.findOne({ googleId: idToCheck })
+        .then(existingUser => {
+            if (existingUser) {
+                return res.json({ exists: true });
+            } else {
+                return res.json({ exists: false });
+            }
+        })
+        .catch(err => {
+            return res.status(500).json({ error: 'An error occurred' });
+        });
+});
+
+app.post('/registergoogle', (req, res) => {
+    const { googleId, username, picture } = req.body;
+    UserModelGoogle.create({ googleId, username, picture })
+        .then(user => console.log(user))
+        .catch(err => res.json(err));
+});
+
+
 //API for Login, Fetching User Information
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -107,7 +157,7 @@ app.post('/login', (req, res) => {
                             'jwt-secret-key',
                             { expiresIn: '1d' }
                         );
-                        res.cookie('token', token, { sameSite: 'None', secure: true }); 
+                        res.cookie('token', token); 
                         // sameSite none because our frontend has different domain with backend. secure true because
                         // the deployed frontend and server is https not http
                         return res.json("Success");
@@ -115,6 +165,27 @@ app.post('/login', (req, res) => {
                         return res.json('Password incorrect');
                     }
                 });
+            } else {
+                res.json('User Not Found');
+            }
+        });
+});
+
+app.post('/logingoogle', (req, res) => {
+    console.log('Received request');  // This will log when a request is received
+    const { googleId } = req.body;
+    UserModel.findOne({ googleId: googleId })
+        .then(user => {
+            console.log('Query completed');  // This will log when the query is completed
+            console.log(user);  // This will log the user object
+            if (user) {
+                const token = jwt.sign(
+                    { _id: user._id, username: user.username, email: user.email},
+                    'jwt-secret-key',
+                    { expiresIn: '1d' }
+                );
+                res.cookie('token', token); 
+                return res.json("Success");
             } else {
                 res.json('User Not Found');
             }
