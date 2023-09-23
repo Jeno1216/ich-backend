@@ -32,7 +32,6 @@ const app = express();
 
 // Database Models
 const UserModel = require('./models/UserModel')
-const UserModelGoogle = require('./models/UserModelGoogle')
 const ProductModel = require('./models/ProductModel')
 const RatingModel = require('./models/RatingModel');
 const cookieSession = require('cookie-session');
@@ -123,7 +122,7 @@ app.get('/check-google-id/:googleId', (req, res) => {
     console.log(idToCheck);
 
     // Look for a user with the provided email in the database
-    UserModelGoogle.findOne({ googleId: idToCheck })
+    UserModel.findOne({ googleId: idToCheck })
         .then(existingUser => {
             if (existingUser) {
                 return res.json({ exists: true });
@@ -138,7 +137,7 @@ app.get('/check-google-id/:googleId', (req, res) => {
 
 app.post('/registergoogle', (req, res) => {
     const { googleId, username, picture } = req.body;
-    UserModelGoogle.create({ googleId, username, picture })
+    UserModel.create({ googleId, username, picture })
         .then(user => console.log(user))
         .catch(err => res.json(err));
 });
