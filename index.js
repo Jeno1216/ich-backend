@@ -154,11 +154,9 @@ app.post('/login', (req, res) => {
                             'jwt-secret-key',
                             { expiresIn: '1d' }
                         );
-                        res.cookie('token', token, {
-                            domain: '.onrender.com',
-                            sameSite: 'None', 
-                            secure: true
-                        });
+                        res.cookie('token', token); 
+                        // sameSite none because our frontend has different domain with backend. secure true because
+                        // the deployed frontend and server is https not http
                         return res.json("Success");
                     } else {
                         return res.json('Password incorrect');
