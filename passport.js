@@ -9,7 +9,7 @@ const GOOGLE_CLIENT_SECRET = "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"
 passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: "/auth/google/callback",
+  callbackURL: "https://iloilo-coffee-house-api.onrender.com/auth/google/callback",
   scope: ['profile', 'email']  // Add this line
 },
 
