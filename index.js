@@ -44,6 +44,7 @@ app.use(cors({
     credentials: true  // Allow credentials like cookies to be included in requests
 }));
 
+
 // Enable JSON request and response handling
 app.use(express.json());
 
@@ -154,7 +155,11 @@ app.post('/login', (req, res) => {
                             'jwt-secret-key',
                             { expiresIn: '1d' }
                         );
-                        res.cookie('token', token); 
+                        res.cookie('token', token, {
+                            domain: '.onrender.com',
+                            sameSite: 'None', 
+                            secure: true
+                        });
                         // sameSite none because our frontend has different domain with backend. secure true because
                         // the deployed frontend and server is https not http
                         return res.json("Success");
