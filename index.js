@@ -156,10 +156,9 @@ app.post('/login', (req, res) => {
                         );
                         res.cookie('token', token, {
                             sameSite: 'None', 
-                            secure: true
+                            secure: true,
+                            httpOnly: true // Add this line
                         });
-                                                // sameSite none because our frontend has different domain with backend. secure true because
-                        // the deployed frontend and server is https not http
                         return res.json("Success");
                     } else {
                         return res.json('Password incorrect');
