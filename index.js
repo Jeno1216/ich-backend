@@ -185,8 +185,11 @@ app.post('/logingoogle', (req, res) => {
                     'jwt-secret-key',
                     { expiresIn: '1d' }
                 );
-                res.cookie('token', token); 
-                return res.json("Success");
+                res.cookie('token', token, {
+                    sameSite: 'None', 
+                    secure: true
+                });
+        return res.json("Success");
             } else {
                 res.json('User Not Found');
             }
