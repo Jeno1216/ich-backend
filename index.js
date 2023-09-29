@@ -156,7 +156,6 @@ app.post('/login', (req, res) => {
                             { expiresIn: '1d' }
                         );
                         res.cookie('token', token, {
-                            domain: '.onrender.com',
                             sameSite: 'None', 
                             secure: true
                         });
