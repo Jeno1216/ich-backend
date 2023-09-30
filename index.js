@@ -39,7 +39,7 @@ const cookieSession = require('cookie-session');
 
 // Configure CORS settings for cross-origin requests
 app.use(cors({
-    origin: ['https://iloilo-coffee-house.onrender.com'],  // Allow requests from this origin
+    origin: ['https://iloilo-coffee-house.onrender.com', 'http://localhost:5173'],  // Allow requests from this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allow specified HTTP methods
     credentials: true  // Allow credentials like cookies to be included in requests
 }));
