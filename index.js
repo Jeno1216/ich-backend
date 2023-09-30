@@ -56,10 +56,10 @@ app.use(cookieSession(
     }
 ));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/auth", authRoute);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Parse cookies in incoming requests
 app.use(cookieParser());
