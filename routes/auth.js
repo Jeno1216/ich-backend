@@ -34,8 +34,15 @@ router.get("/google", passport.authenticate("google", {
 }));
 
 router.get('/google/callback', passport.authenticate('google', {
-    successRedirect: 'https://iloilo-coffee-house.onrender.com/',
     failureRedirect: '/login/failed'
-}));
+}), (req, res) => {
+    // Authentication was successful, user is available as req.user
+    // Send the necessary data back to the client
+    res.status(200).json({
+        success: true,
+        message: 'User successfully logged in',
+        user: req.user,
+    });
+});
 
 module.exports = router;
