@@ -105,7 +105,7 @@ app.get('/some-route', (req, res) => {
     // Access user data here
     const user = req.user;
     res.json(user)
-    console.log(user);
+    console.log("user data", user);
 });
 
 // API for Registering a User, Posting a User
