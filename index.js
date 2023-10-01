@@ -104,7 +104,7 @@ app.get('/check-email/:email', (req, res) => {
 app.get('/some-route', (req, res) => {
     // Access user data here
     const user = req.user;
-    res.json(user);
+    res.json("What the fuck men");
 });
 
 // API for Registering a User, Posting a User
