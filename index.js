@@ -103,7 +103,8 @@ app.get('/check-email/:email', (req, res) => {
 
 app.get('/some-route', (req, res) => {
     // Access user data here
-    res.json("user")
+    const user = req.user.googleId;
+    res.json(user)
 });
 
 // API for Registering a User, Posting a User
