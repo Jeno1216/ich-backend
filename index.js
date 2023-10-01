@@ -103,7 +103,7 @@ app.get('/check-email/:email', (req, res) => {
 
 app.get('/some-route', (req, res) => {
     // Access user data here
-    const user = req.user.googleId;
+    const user = req.user;
     res.json(user)
     console.log(user);
 });
