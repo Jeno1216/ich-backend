@@ -497,5 +497,8 @@ app.get('/fetchuserbyid/:id', async (req, res) => {
 
 
 
-app.listen(3001, () => {
-    console.log('Server running on port 3001')})
+// Server Setup
+const PORT = 3333;
+app.listen(PORT, () => {
+  console.log(`Server is running at PORT ${PORT}`);
+});
